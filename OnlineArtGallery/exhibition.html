@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Exhibitions — ArtVault</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="navbar__logo">🎨 ArtVault</a>
+  <ul class="navbar__links">
+    <li><a href="index.html">Home</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="exhibition.html" class="active">Exhibitions</a></li><li><a href="workshop.html">Workshops</a></li><li><a href="artists.html">Artists</a></li>
+  </ul>
+  <div class="navbar__actions">
+    <a href="wishlist.html" class="navbar__icon-btn">♡<span class="navbar__badge" id="wishBadge">0</span></a>
+    <a href="cart.html" class="navbar__icon-btn">🛒<span class="navbar__badge" id="cartBadge">0</span></a>
+    <a href="login.html" class="btn btn-outline btn-sm" id="loginBtn">Login</a>
+    <img src="" alt="User" class="navbar__avatar" id="userAvatar" style="display:none"/>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="container">
+    <h1>Art <span class="accent">Exhibitions</span></h1>
+    <p>Immersive art experiences — from virtual showcases to exclusive gallery events</p>
+  </div>
+</div>
+
+<section class="section" style="padding-top:2.5rem;">
+  <div class="container">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showExhibitionTab('upcoming',this)">⏰ Upcoming</button>
+      <button class="tab-btn" onclick="showExhibitionTab('ongoing',this)">🟢 Ongoing</button>
+      <button class="tab-btn" onclick="showExhibitionTab('past',this)">✅ Past</button>
+    </div>
+    <div id="exhibitionsGrid"><div class="loader"><div class="spinner"></div></div></div>
+  </div>
+</section>
+
+<!-- REGISTRATION MODAL -->
+<div class="modal-overlay" id="regModal">
+  <div class="modal">
+    <button class="modal__close" onclick="closeModal('regModal')">✕</button>
+    <h2 class="modal__title">Register for Exhibition</h2>
+    <div id="regModalBody">
+      <div class="form-group"><label class="form-label">Full Name</label><input class="form-control" id="regName" placeholder="Your full name"/></div>
+      <div class="form-group"><label class="form-label">Email</label><input class="form-control" id="regEmail" type="email" placeholder="your@email.com"/></div>
+      <div class="form-group"><label class="form-label">Phone</label><input class="form-control" id="regPhone" type="tel" placeholder="+91 XXXXX XXXXX"/></div>
+      <div class="form-group"><label class="form-label">Number of Tickets</label>
+        <select class="form-control" id="regTickets"><option>1</option><option>2</option><option>3</option><option>4</option></select>
+      </div>
+      <button class="btn btn-primary btn-block" onclick="confirmRegistration()">Register Now →</button>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer__grid">
+    <div><div class="footer__logo">🎨 ArtVault</div><p class="footer__desc">Premier online art gallery.</p></div>
+    <div class="footer__col"><h4>Explore</h4><a href="gallery.html">Gallery</a><a href="auction.html">Auctions</a></div>
+    <div class="footer__col"><h4>Support</h4><a href="about.html">About</a><a href="#">FAQ</a></div>
+    <div class="footer__col"><h4>Legal</h4><a href="#">Privacy</a><a href="#">Terms</a></div>
+  </div>
+  <div class="footer__bottom">© 2025 ArtVault. All rights reserved.</div>
+</footer>
+<div class="toast-container" id="toastContainer"></div>
+<script src="js/main.js"></script>
+<script>
+const BASE=window.API_BASE||'http://localhost:8080/api';
+const EXHDATA=[
+  {id:1,title:'Colors of India',desc:'A vibrant showcase of traditional and modern Indian art forms.',date:'2025-06-15',location:'Mumbai Gallery',type:'upcoming',img:'https://picsum.photos/seed/exh1/600/320',capacity:200,registered:145,price:'Free',tags:['Traditional','Contemporary','Painting']},
+  {id:2,title:'Abstract Dimensions',desc:'Explore the boundaries of abstract expressionism with 40 international artists.',date:'2025-05-20',location:'Virtual + Delhi',type:'ongoing',img:'https://picsum.photos/seed/exh2/600/320',capacity:500,registered:380,price:'₹500',tags:['Abstract','International']},
+  {id:3,title:'Digital Frontier',desc:'Where technology meets art — an immersive digital art experience.',date:'2025-07-10',location:'Bangalore Convention Center',type:'upcoming',img:'https://picsum.photos/seed/exh3/600/320',capacity:350,registered:92,price:'₹300',tags:['Digital','Interactive']},
+  {id:4,title:'Sculpted Visions',desc:'A retrospective of sculpture from classical to contemporary.',date:'2025-03-10',location:'Chennai Museum',type:'past',img:'https://picsum.photos/seed/exh4/600/320',capacity:200,registered:200,price:'₹200',tags:['Sculpture','Retrospective']},
+];
+let currentTab='upcoming';
+function showExhibitionTab(tab,btn){
+  currentTab=tab;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  renderExhibitions();
+}
+function renderExhibitions(){
+  const filtered=EXHDATA.filter(e=>e.type===currentTab);
+  const grid=document.getElementById('exhibitionsGrid');
+  if(!filtered.length){grid.innerHTML='<div class="no-results"><h3>No '+currentTab+' exhibitions</h3><p>Check back soon for new exhibitions.</p></div>';return;}
+  grid.innerHTML=filtered.map(e=>`
+    <div class="card" style="margin-bottom:2rem;display:grid;grid-template-columns:2fr 1fr;overflow:hidden;">
+      <div style="position:relative;">
+        <img src="${e.img}" alt="${e.title}" style="width:100%;height:280px;object-fit:cover;"/>
+        <div style="position:absolute;top:1rem;left:1rem;display:flex;gap:.5rem;">
+          ${e.tags.map(t=>`<span class="badge badge-gold">${t}</span>`).join('')}
+        </div>
+      </div>
+      <div class="card__body" style="display:flex;flex-direction:column;justify-content:space-between;">
+        <div>
+          <h3 class="card__title" style="font-size:1.4rem;">${e.title}</h3>
+          <p class="card__sub" style="margin:.5rem 0 1rem;">${e.desc}</p>
+          <div style="display:flex;flex-direction:column;gap:.5rem;font-size:.875rem;color:var(--text-secondary);">
+            <span>📅 ${new Date(e.date).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'})}</span>
+            <span>📍 ${e.location}</span>
+            <span>🎟️ ${e.price}</span>
+            <span>👥 ${e.registered}/${e.capacity} registered</span>
+          </div>
+          <div style="margin-top:1rem;background:var(--bg-glass);border-radius:var(--radius-sm);height:6px;overflow:hidden;">
+            <div style="height:100%;width:${Math.round(e.registered/e.capacity*100)}%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:2px;"></div>
+          </div>
+        </div>
+        <div style="margin-top:1.5rem;">
+          ${e.type==='past'?`<button class="btn btn-ghost btn-block" disabled>Exhibition Ended</button>`:`<button class="btn btn-primary btn-block" onclick="openRegModal(${e.id})">Register Now →</button>`}
+        </div>
+      </div>
+    </div>`).join('');
+}
+function openRegModal(id){document.getElementById('regModal').classList.add('open');}
+function confirmRegistration(){closeModal('regModal');showToast('Successfully registered!','success');}
+document.addEventListener('DOMContentLoaded',renderExhibitions);
+</script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Admin Panel — ArtVault</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/dashboard.css"/>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="navbar__logo">🎨 ArtVault Admin</a>
+  <ul class="navbar__links">
+    <li><a href="index.html">Public Site</a></li>
+  </ul>
+  <div class="navbar__actions">
+    <img src="https://picsum.photos/seed/admin/40/40" alt="Admin" class="navbar__avatar" id="userAvatar"/>
+  </div>
+</nav>
+
+<div class="dashboard-layout">
+  <aside class="dash-sidebar">
+    <div class="dash-sidebar__user">
+      <img src="https://picsum.photos/seed/admin/72/72" alt="Admin" class="dash-sidebar__avatar"/>
+      <div class="dash-sidebar__name">Admin</div>
+      <div class="dash-sidebar__role" style="color:var(--red);">Administrator</div>
+    </div>
+    <nav class="dash-nav">
+      <a href="#" class="active" onclick="showAdmin('overview',this)"><span class="icon">📊</span>Dashboard</a>
+      <a href="#" onclick="showAdmin('artworks',this)"><span class="icon">🖼️</span>Artworks<span class="count" id="aCount">0</span></a>
+      <a href="#" onclick="showAdmin('users',this)"><span class="icon">👥</span>Users<span class="count" id="uCount">0</span></a>
+      <a href="#" onclick="showAdmin('orders',this)"><span class="icon">📦</span>Orders<span class="count" id="oCount">0</span></a>
+      <a href="#" onclick="showAdmin('auctions',this)"><span class="icon">🔨</span>Auctions</a>
+      <a href="#" onclick="showAdmin('exhibitions',this)"><span class="icon">🏛️</span>Exhibitions</a>
+      <a href="#" onclick="showAdmin('categories',this)"><span class="icon">📁</span>Categories</a>
+      <a href="#" onclick="showAdmin('analytics',this)"><span class="icon">📈</span>Analytics</a>
+      <a href="index.html" style="margin-top:2rem;"><span class="icon">🌐</span>View Site</a>
+      <a href="#" onclick="logout()" style="color:var(--red);"><span class="icon">🚪</span>Logout</a>
+    </nav>
+  </aside>
+
+  <main class="dash-content">
+
+    <!-- OVERVIEW -->
+    <div class="dash-section active" id="sec-overview">
+      <div class="dash-page-title">Admin Dashboard</div>
+      <div class="dash-page-sub">Welcome back, Administrator. Here's today's summary.</div>
+      <div class="dash-stats">
+        <div class="dash-stat-card"><div class="dash-stat-icon gold">🖼️</div><div><div class="dash-stat-value" id="totalArtworks">0</div><div class="dash-stat-label">Total Artworks</div><div class="dash-stat-trend up" id="artTrend">+0 this week</div></div></div>
+        <div class="dash-stat-card"><div class="dash-stat-icon purple">👥</div><div><div class="dash-stat-value" id="totalUsers">0</div><div class="dash-stat-label">Registered Users</div></div></div>
+        <div class="dash-stat-card"><div class="dash-stat-icon green">💰</div><div><div class="dash-stat-value" id="totalRevenue">₹0</div><div class="dash-stat-label">Total Revenue</div><div class="dash-stat-trend up">+12% this month</div></div></div>
+        <div class="dash-stat-card"><div class="dash-stat-icon blue">📦</div><div><div class="dash-stat-value" id="totalOrders">0</div><div class="dash-stat-label">Orders</div></div></div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="admin-actions-grid">
+        <div class="admin-action-card" onclick="showAdmin('artworks',document.querySelector('[onclick*=artworks]'))">
+          <div class="icon">🖼️</div><div class="label">Manage Artworks</div>
+        </div>
+        <div class="admin-action-card" onclick="showAdmin('users',document.querySelector('[onclick*=users]'))">
+          <div class="icon">👥</div><div class="label">Manage Users</div>
+        </div>
+        <div class="admin-action-card" onclick="showAdmin('orders',document.querySelector('[onclick*=orders]'))">
+          <div class="icon">📦</div><div class="label">View Orders</div>
+        </div>
+        <div class="admin-action-card" onclick="showAdmin('analytics',document.querySelector('[onclick*=analytics]'))">
+          <div class="icon">📈</div><div class="label">Analytics</div>
+        </div>
+      </div>
+
+      <!-- Revenue Chart -->
+      <div class="admin-chart">
+        <h3>Top Selling Artworks</h3>
+        <div class="chart-bar-wrap" id="topArtworksChart"></div>
+      </div>
+    </div>
+
+    <!-- ARTWORKS MANAGEMENT -->
+    <div class="dash-section" id="sec-artworks">
+      <div class="dash-page-title">Artworks Management</div>
+      <div class="dash-page-sub">View, approve, edit and delete artworks</div>
+      <div style="display:flex;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap;">
+        <div class="search-bar" style="flex:1;min-width:240px;">
+          <input type="text" id="adminArtSearch" placeholder="Search artworks…" oninput="filterAdminArtworks()"/>
+          <button>🔍</button>
+        </div>
+        <select class="sort-select" id="adminArtStatus">
+          <option value="">All Status</option>
+          <option value="PENDING">Pending</option>
+          <option value="APPROVED">Approved</option>
+          <option value="REJECTED">Rejected</option>
+        </select>
+        <a href="artist-upload.html" class="btn btn-primary">+ Add Artwork</a>
+      </div>
+      <div class="artworks-grid" id="adminArtworksGrid" style="grid-template-columns:repeat(auto-fill,minmax(220px,1fr));"></div>
+    </div>
+
+    <!-- USERS MANAGEMENT -->
+    <div class="dash-section" id="sec-users">
+      <div class="dash-page-title">User Management</div>
+      <div class="dash-page-sub">Manage all registered users and their roles</div>
+      <div style="margin-bottom:1rem;">
+        <div class="search-bar" style="max-width:360px;">
+          <input type="text" id="adminUserSearch" placeholder="Search users…" oninput="filterAdminUsers()"/>
+          <button>🔍</button>
+        </div>
+      </div>
+      <table class="data-table" id="usersTable">
+        <thead><tr><th>User</th><th>Email</th><th>Role</th><th>Joined</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="usersTableBody"><tr><td colspan="6"><div class="loader"><div class="spinner"></div></div></td></tr></tbody>
+      </table>
+    </div>
+
+    <!-- ORDERS MANAGEMENT -->
+    <div class="dash-section" id="sec-orders">
+      <div class="dash-page-title">Orders Management</div>
+      <div class="dash-page-sub">View and update all customer orders</div>
+      <table class="data-table">
+        <thead><tr><th>Order ID</th><th>Customer</th><th>Artwork</th><th>Amount</th><th>Status</th><th>Date</th><th>Action</th></tr></thead>
+        <tbody id="ordersTableBody"><tr><td colspan="7"><div class="loader"><div class="spinner"></div></div></td></tr></tbody>
+      </table>
+    </div>
+
+    <!-- ANALYTICS -->
+    <div class="dash-section" id="sec-analytics">
+      <div class="dash-page-title">Analytics</div>
+      <div class="dash-page-sub">Platform performance and revenue insights</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+        <div class="admin-chart"><h3>Revenue by Category</h3><div class="chart-bar-wrap" id="revByCatChart"></div></div>
+        <div class="admin-chart"><h3>Top Artists by Sales</h3><div class="chart-bar-wrap" id="topArtistsChart"></div></div>
+      </div>
+      <div class="admin-chart"><h3>Monthly Orders</h3><div class="chart-bar-wrap" id="monthlyOrdersChart"></div></div>
+    </div>
+
+    <!-- AUCTIONS -->
+    <div class="dash-section" id="sec-auctions">
+      <div class="dash-page-title">Auction Management</div>
+      <div class="dash-page-sub">Create and manage live auctions</div>
+      <div style="text-align:right;margin-bottom:1.5rem;"><button class="btn btn-primary" onclick="openCreateAuction()">+ Create Auction</button></div>
+      <div class="auctions-grid" id="adminAuctionsGrid" style="grid-template-columns:repeat(auto-fill,minmax(300px,1fr));"></div>
+    </div>
+
+    <!-- EXHIBITIONS -->
+    <div class="dash-section" id="sec-exhibitions">
+      <div class="dash-page-title">Exhibition Management</div>
+      <div class="dash-page-sub">Manage gallery exhibitions and events</div>
+      <div style="text-align:right;margin-bottom:1.5rem;"><button class="btn btn-primary" onclick="openCreateExhibition()">+ Create Exhibition</button></div>
+      <div id="exhibitionsAdminList"></div>
+    </div>
+
+    <!-- CATEGORIES -->
+    <div class="dash-section" id="sec-categories">
+      <div class="dash-page-title">Category Management</div>
+      <div class="dash-page-sub">Manage artwork categories</div>
+      <div style="text-align:right;margin-bottom:1.5rem;"><button class="btn btn-primary" onclick="openCreateCategory()">+ Add Category</button></div>
+      <div id="categoriesAdminList"></div>
+    </div>
+  </main>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+<script src="js/main.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

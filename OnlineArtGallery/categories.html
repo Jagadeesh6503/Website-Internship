@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Categories — Online Art Gallery</title>
+  <meta name="description" content="Browse art by category — Painting, Sculpture, Photography, Digital Art, and more." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/about.css" />
+</head>
+<body>
+<nav class="navbar">
+  <a href="index.html" class="navbar__logo">🎨 <span>Art</span>Gallery</a>
+  <ul class="navbar__links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="categories.html" class="active">Categories</a></li>
+    <li><a href="exhibition.html">Exhibition</a></li>
+    <li><a href="workshop.html">Workshop</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+  <div class="navbar__actions">
+    <a href="login.html" class="btn btn-outline">Login</a>
+    <a href="register.html" class="btn btn-primary">Register</a>
+  </div>
+  <div class="navbar__hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- Hero -->
+<div style="padding:8rem 2rem 3rem;text-align:center;background:var(--bg-mid);border-bottom:1px solid var(--border)">
+  <h1>Art <span class="accent">Categories</span></h1>
+  <p style="color:var(--text-muted);margin-top:0.5rem">Explore our vast collection organized by medium and style</p>
+</div>
+
+<!-- Search -->
+<section class="section" style="padding-bottom:0">
+  <div class="container" style="max-width:540px;margin:0 auto">
+    <div class="search-bar">
+      <input type="text" id="catSearch" placeholder="Search categories…" />
+      <button id="catSearchBtn">🔍</button>
+    </div>
+  </div>
+</section>
+
+<!-- Categories Grid -->
+<section class="section">
+  <div class="container">
+    <div class="categories-grid" id="categoriesGrid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- Featured by Category -->
+<section class="section" style="background:var(--bg-mid);border-top:1px solid var(--border)" id="categoryArtworks" style="display:none">
+  <div class="container">
+    <div class="section-header">
+      <h2 id="catArtworksTitle">Artworks in <span class="accent"></span></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="artworks-grid" id="catArtworksGrid"></div>
+    <div style="text-align:center;margin-top:2rem">
+      <a href="gallery.html" class="btn btn-outline btn-lg" id="viewAllCatBtn">View All →</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__grid">
+    <div class="footer__brand">
+      <div class="navbar__logo" style="font-size:1.2rem">🎨 <span style="color:#fff">Art</span>Gallery</div>
+      <p>A platform dedicated to showcasing and promoting artworks from artists around the world.</p>
+    </div>
+    <div class="footer__col"><h4>Quick Links</h4><a href="index.html">Home</a><a href="gallery.html">Collection</a><a href="exhibition.html">Exhibitions</a><a href="workshop.html">Workshops</a></div>
+    <div class="footer__col"><h4>Categories</h4><a href="#">Painting</a><a href="#">Sculpture</a><a href="#">Photography</a><a href="#">Digital Art</a></div>
+    <div class="footer__col"><h4>Support</h4><a href="about.html">About Us</a><a href="about.html#contact">Contact</a><a href="#">FAQ</a></div>
+  </div>
+  <div class="footer__bottom">&copy; 2024 ArtGallery. All rights reserved.</div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  renderCategories(MOCK.categories);
+
+  document.getElementById('catSearchBtn').addEventListener('click', () => {
+    const q = document.getElementById('catSearch').value.toLowerCase();
+    renderCategories(MOCK.categories.filter(c => c.name.toLowerCase().includes(q)));
+  });
+  document.getElementById('catSearch').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('catSearchBtn').click();
+  });
+});
+
+function renderCategories(cats) {
+  const grid = document.getElementById('categoriesGrid');
+  grid.innerHTML = cats.map(cat => `
+    <div class="category-card" onclick="showCategoryArtworks('${cat.name}')">
+      <img src="${cat.image}" alt="${cat.name}" loading="lazy" />
+      <div class="category-card__body">
+        <div class="category-card__name">${cat.name}</div>
+        <div class="category-card__count">${cat.count} artworks</div>
+      </div>
+    </div>`).join('');
+}
+
+function showCategoryArtworks(catName) {
+  const section = document.getElementById('categoryArtworks');
+  const grid    = document.getElementById('catArtworksGrid');
+  const titleEl = document.getElementById('catArtworksTitle');
+  const viewBtn = document.getElementById('viewAllCatBtn');
+  const arts    = MOCK.artworks.filter(a => a.category === catName);
+  
+  titleEl.innerHTML = `Artworks in <span class="accent">${catName}</span>`;
+  viewBtn.href = `gallery.html?q=${encodeURIComponent(catName)}`;
+  section.style.display = 'block';
+  
+  grid.innerHTML = arts.length
+    ? arts.map(art => `
+        <div class="artwork-card" onclick="window.location.href='gallery.html?id=${art.id}'">
+          <img class="artwork-card__img" src="${art.image}" alt="${art.title}" loading="lazy"/>
+          <div class="artwork-card__body">
+            <div class="artwork-card__category">${art.category}</div>
+            <div class="artwork-card__title">${art.title}</div>
+            <div class="artwork-card__artist">by ${art.artist}</div>
+          </div>
+          <div class="artwork-card__footer">
+            <span class="artwork-card__price">$${art.price.toLocaleString()}</span>
+          </div>
+        </div>`).join('')
+    : '<p style="color:var(--text-muted)">No artworks in this category yet.</p>';
+  section.scrollIntoView({ behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

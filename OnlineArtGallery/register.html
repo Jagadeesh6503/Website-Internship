@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Create Account — ArtVault</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/auth.css"/>
+</head>
+<body>
+<div class="auth-page">
+  <div class="auth-grid">
+    <div class="auth-visual">
+      <div class="auth-visual__art"><img src="https://picsum.photos/seed/register/600/320" alt="Art"/></div>
+      <div class="auth-visual__quote">
+        <p>"Every artist was first an amateur. Your journey begins with a single step."</p>
+        <cite>— Ralph Waldo Emerson</cite>
+      </div>
+    </div>
+    <div class="auth-form-side">
+      <a href="index.html" class="auth-logo">🎨 ArtVault</a>
+      <h1 class="auth-title">Create Account</h1>
+      <p class="auth-subtitle">Join 50,000+ art lovers worldwide.</p>
+
+      <div class="steps-indicator">
+        <div class="step-dot active" id="dot1"></div>
+        <div class="step-dot" id="dot2"></div>
+        <div class="step-dot" id="dot3"></div>
+      </div>
+
+      <!-- Step 1 -->
+      <div id="step1">
+        <p style="font-size:.875rem;font-weight:600;color:var(--text-muted);margin-bottom:1rem;">STEP 1 — Choose Your Role</p>
+        <div class="role-select">
+          <div class="role-opt active" id="roleCollector" onclick="selectRole('COLLECTOR',this)">
+            <div class="role-opt__icon">🖼️</div>
+            <div class="role-opt__label">Art Collector</div>
+          </div>
+          <div class="role-opt" id="roleArtist" onclick="selectRole('ARTIST',this)">
+            <div class="role-opt__icon">🎨</div>
+            <div class="role-opt__label">Artist</div>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-block" onclick="nextStep(2)">Continue →</button>
+      </div>
+
+      <!-- Step 2 -->
+      <div id="step2" style="display:none;">
+        <p style="font-size:.875rem;font-weight:600;color:var(--text-muted);margin-bottom:1rem;">STEP 2 — Your Details</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+          <div class="form-group">
+            <label class="form-label">First Name</label>
+            <input class="form-control" type="text" id="regFirstName" placeholder="John" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Last Name</label>
+            <input class="form-control" type="text" id="regLastName" placeholder="Doe" required/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input class="form-control" type="email" id="regEmail" placeholder="john@example.com" required/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input class="form-control" type="password" id="regPassword" placeholder="Min 8 characters" oninput="checkStrength(this.value)" required/>
+          <div class="strength-bar"><div class="strength-fill" id="strengthFill" style="width:0%;background:var(--red);"></div></div>
+          <small id="strengthText" style="font-size:.75rem;color:var(--text-muted);">Enter password</small>
+        </div>
+        <div style="display:flex;gap:.75rem;">
+          <button class="btn btn-ghost btn-block" onclick="nextStep(1)">← Back</button>
+          <button class="btn btn-primary btn-block" onclick="nextStep(3)">Continue →</button>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div id="step3" style="display:none;">
+        <p style="font-size:.875rem;font-weight:600;color:var(--text-muted);margin-bottom:1rem;">STEP 3 — Final Details</p>
+        <div class="form-group">
+          <label class="form-label">Phone Number</label>
+          <input class="form-control" type="tel" id="regPhone" placeholder="+91 XXXXX XXXXX"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Country</label>
+          <select class="form-control" id="regCountry">
+            <option>India</option><option>United States</option><option>United Kingdom</option><option>Australia</option><option>Canada</option><option>Germany</option><option>France</option><option>Japan</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label style="display:flex;align-items:flex-start;gap:.5rem;font-size:.875rem;cursor:pointer;color:var(--text-secondary);">
+            <input type="checkbox" id="agreeTerms" style="margin-top:3px;accent-color:var(--gold);"/>
+            I agree to the <a href="#" style="color:var(--gold);margin:0 .25rem;">Terms of Service</a> and <a href="#" style="color:var(--gold);">Privacy Policy</a>
+          </label>
+        </div>
+        <div style="display:flex;gap:.75rem;">
+          <button class="btn btn-ghost btn-block" onclick="nextStep(2)">← Back</button>
+          <button class="btn btn-primary btn-block" onclick="handleRegister()">Create Account 🎉</button>
+        </div>
+      </div>
+
+      <div class="auth-footer">Already have an account? <a href="login.html">Sign in</a></div>
+    </div>
+  </div>
+</div>
+<div class="toast-container" id="toastContainer"></div>
+<script src="js/main.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

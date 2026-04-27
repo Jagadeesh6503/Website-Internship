@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Dashboard — ArtVault</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/dashboard.css"/>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="navbar__logo">🎨 ArtVault</a>
+  <ul class="navbar__links">
+    <li><a href="index.html">Home</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="auction.html">Auctions</a></li>
+  </ul>
+  <div class="navbar__actions">
+    <a href="wishlist.html" class="navbar__icon-btn">♡<span class="navbar__badge" id="wishBadge">0</span></a>
+    <a href="cart.html" class="navbar__icon-btn">🛒<span class="navbar__badge" id="cartBadge">0</span></a>
+    <img src="https://picsum.photos/seed/user/40/40" alt="User" class="navbar__avatar" id="userAvatar"/>
+  </div>
+</nav>
+
+<div class="dashboard-layout">
+  <!-- SIDEBAR -->
+  <aside class="dash-sidebar">
+    <div class="dash-sidebar__user">
+      <img src="https://picsum.photos/seed/user/72/72" alt="User" class="dash-sidebar__avatar" id="sidebarAvatar"/>
+      <div class="dash-sidebar__name" id="sidebarName">Loading…</div>
+      <div class="dash-sidebar__role" id="sidebarRole">Collector</div>
+    </div>
+    <nav class="dash-nav">
+      <a href="#" class="active" onclick="showDash('overview',this)"><span class="icon">📊</span>Overview</a>
+      <a href="#" onclick="showDash('orders',this)"><span class="icon">📦</span>My Orders<span class="count" id="orderCount">0</span></a>
+      <a href="wishlist.html"><span class="icon">♡</span>Wishlist<span class="count" id="wishCount2">0</span></a>
+      <a href="#" onclick="showDash('reviews',this)"><span class="icon">⭐</span>My Reviews</a>
+      <a href="#" onclick="showDash('profile',this)"><span class="icon">👤</span>Profile Settings</a>
+      <a href="#" onclick="showDash('artist',this)" id="artistMenuLink" style="display:none;"><span class="icon">🎨</span>Artist Studio</a>
+      <a href="admin.html" id="adminMenuLink" style="display:none;"><span class="icon">⚙️</span>Admin Panel</a>
+      <a href="#" onclick="logout()" style="margin-top:2rem;color:var(--red);"><span class="icon">🚪</span>Logout</a>
+    </nav>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="dash-content">
+
+    <!-- OVERVIEW -->
+    <div class="dash-section active" id="sec-overview">
+      <div class="dash-page-title">Welcome Back, <span id="welcomeName">…</span> 👋</div>
+      <div class="dash-page-sub">Here's what's happening with your art collection.</div>
+      <div class="dash-stats">
+        <div class="dash-stat-card"><div class="dash-stat-icon gold">📦</div><div><div class="dash-stat-value" id="dStatOrders">0</div><div class="dash-stat-label">Orders</div></div></div>
+        <div class="dash-stat-card"><div class="dash-stat-icon purple">♡</div><div><div class="dash-stat-value" id="dStatWish">0</div><div class="dash-stat-label">Wishlisted</div></div></div>
+        <div class="dash-stat-card"><div class="dash-stat-icon green">⭐</div><div><div class="dash-stat-value" id="dStatReviews">0</div><div class="dash-stat-label">Reviews</div></div></div>
+        <div class="dash-stat-card"><div class="dash-stat-icon blue">🔨</div><div><div class="dash-stat-value" id="dStatBids">0</div><div class="dash-stat-label">Active Bids</div></div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:2fr 1fr;gap:1.5rem;">
+        <div>
+          <h3 style="font-family:var(--font-display);font-size:1.15rem;font-weight:600;margin-bottom:1.25rem;">Recent Orders</h3>
+          <div id="recentOrdersTable"><div class="loader"><div class="spinner"></div></div></div>
+        </div>
+        <div>
+          <h3 style="font-family:var(--font-display);font-size:1.15rem;font-weight:600;margin-bottom:1.25rem;">Quick Actions</h3>
+          <div style="display:flex;flex-direction:column;gap:.75rem;">
+            <a href="gallery.html" class="btn btn-outline">🖼️ Browse Gallery</a>
+            <a href="auction.html" class="btn btn-outline">🔨 Live Auctions</a>
+            <a href="wishlist.html" class="btn btn-outline">♡ My Wishlist</a>
+            <a href="artist-upload.html" class="btn btn-outline">📤 Upload Artwork</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORDERS -->
+    <div class="dash-section" id="sec-orders">
+      <div class="dash-page-title">My Orders</div>
+      <div class="dash-page-sub">Track all your artwork purchases</div>
+      <div id="ordersTableWrap"><div class="loader"><div class="spinner"></div></div></div>
+    </div>
+
+    <!-- REVIEWS -->
+    <div class="dash-section" id="sec-reviews">
+      <div class="dash-page-title">My Reviews</div>
+      <div class="dash-page-sub">Reviews you've written for artworks</div>
+      <div id="reviewsWrap"><div class="loader"><div class="spinner"></div></div></div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="dash-section" id="sec-profile">
+      <div class="dash-page-title">Profile Settings</div>
+      <div class="dash-page-sub">Manage your account information</div>
+      <div class="profile-grid">
+        <div class="avatar-upload">
+          <img src="https://picsum.photos/seed/user/140/140" alt="Avatar" class="avatar-upload__img" id="profileAvatar"/>
+          <label for="avatarFile" class="btn btn-outline btn-sm" style="margin-top:.75rem;">Change Photo</label>
+          <input type="file" id="avatarFile" accept="image/*" onchange="previewAvatar(this)"/>
+        </div>
+        <div>
+          <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+            <div class="form-group"><label class="form-label">First Name</label><input class="form-control" id="profFirstName"/></div>
+            <div class="form-group"><label class="form-label">Last Name</label><input class="form-control" id="profLastName"/></div>
+          </div>
+          <div class="form-group"><label class="form-label">Email</label><input class="form-control" id="profEmail" type="email"/></div>
+          <div class="form-group"><label class="form-label">Phone</label><input class="form-control" id="profPhone" type="tel"/></div>
+          <div class="form-group"><label class="form-label">Bio</label><textarea class="form-control" id="profBio" rows="3" placeholder="Tell us about yourself…"></textarea></div>
+          <button class="btn btn-primary" onclick="saveProfile()">Save Changes</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ARTIST STUDIO -->
+    <div class="dash-section" id="sec-artist">
+      <div class="dash-page-title">Artist Studio</div>
+      <div class="dash-page-sub">Manage your artworks and earnings</div>
+      <div class="dash-stats" style="grid-template-columns:repeat(3,1fr);">
+        <div class="dash-stat-card"><div class="dash-stat-icon gold">🖼️</div><div><div class="dash-stat-value" id="aStatWorks">0</div><div class="dash-stat-label">Artworks</div></div></div>
+        <div class="dash-stat-card"><div class="dash-stat-icon green">💰</div><div><div class="dash-stat-value" id="aStatEarnings">₹0</div><div class="dash-stat-label">Earnings</div></div></div>
+        <div class="dash-stat-card"><div class="dash-stat-icon purple">👁️</div><div><div class="dash-stat-value" id="aStatViews">0</div><div class="dash-stat-label">Total Views</div></div></div>
+      </div>
+      <div style="text-align:right;margin-bottom:1rem;"><a href="artist-upload.html" class="btn btn-primary">+ Upload New Artwork</a></div>
+      <div class="artworks-grid" id="artistWorksGrid"><div class="loader"><div class="spinner"></div></div></div>
+    </div>
+
+  </main>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+<script src="js/main.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

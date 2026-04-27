@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Workshops — ArtVault</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="navbar__logo">🎨 ArtVault</a>
+  <ul class="navbar__links">
+    <li><a href="index.html">Home</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="exhibition.html">Exhibitions</a></li><li><a href="workshop.html" class="active">Workshops</a></li><li><a href="artists.html">Artists</a></li>
+  </ul>
+  <div class="navbar__actions">
+    <a href="wishlist.html" class="navbar__icon-btn">♡<span class="navbar__badge" id="wishBadge">0</span></a>
+    <a href="cart.html" class="navbar__icon-btn">🛒<span class="navbar__badge" id="cartBadge">0</span></a>
+    <a href="login.html" class="btn btn-outline btn-sm" id="loginBtn">Login</a>
+    <img src="" alt="User" class="navbar__avatar" id="userAvatar" style="display:none"/>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="container">
+    <h1>Art <span class="accent">Workshops</span></h1>
+    <p>Learn from master artists — beginner to advanced sessions, online and in-person</p>
+  </div>
+</div>
+
+<section class="section" style="padding-top:2.5rem;">
+  <div class="container">
+    <div style="display:flex;gap:1rem;margin-bottom:2rem;flex-wrap:wrap;">
+      <div class="cats-wrap" style="flex:1;">
+        <div class="categories-strip" id="workshopFilter">
+          <div class="cat-pill active" onclick="filterWorkshop('all',this)">All</div>
+          <div class="cat-pill" onclick="filterWorkshop('Painting',this)">Painting</div>
+          <div class="cat-pill" onclick="filterWorkshop('Sculpture',this)">Sculpture</div>
+          <div class="cat-pill" onclick="filterWorkshop('Photography',this)">Photography</div>
+          <div class="cat-pill" onclick="filterWorkshop('Digital',this)">Digital Art</div>
+          <div class="cat-pill" onclick="filterWorkshop('Online',this)">Online</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:2rem;" id="workshopsGrid">
+      <div class="loader"><div class="spinner"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ENROLLMENT MODAL -->
+<div class="modal-overlay" id="enrollModal">
+  <div class="modal">
+    <button class="modal__close" onclick="closeModal('enrollModal')">✕</button>
+    <h2 class="modal__title">Enroll in Workshop</h2>
+    <div id="enrollModalBody"></div>
+    <div class="form-group" style="margin-top:1rem;"><label class="form-label">Full Name</label><input class="form-control" id="enrollName" placeholder="Your name"/></div>
+    <div class="form-group"><label class="form-label">Email</label><input class="form-control" id="enrollEmail" type="email" placeholder="your@email.com"/></div>
+    <div class="form-group"><label class="form-label">Experience Level</label>
+      <select class="form-control" id="enrollLevel"><option>Beginner</option><option>Intermediate</option><option>Advanced</option></select>
+    </div>
+    <button class="btn btn-primary btn-block" onclick="confirmEnrollment()">Enroll Now →</button>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer__grid">
+    <div><div class="footer__logo">🎨 ArtVault</div><p class="footer__desc">Premier online art gallery.</p></div>
+    <div class="footer__col"><h4>Explore</h4><a href="gallery.html">Gallery</a><a href="auction.html">Auctions</a></div>
+    <div class="footer__col"><h4>Support</h4><a href="about.html">About</a><a href="#">FAQ</a></div>
+    <div class="footer__col"><h4>Legal</h4><a href="#">Privacy</a><a href="#">Terms</a></div>
+  </div>
+  <div class="footer__bottom">© 2025 ArtVault. All rights reserved.</div>
+</footer>
+<div class="toast-container" id="toastContainer"></div>
+<script src="js/main.js"></script>
+<script>
+const WORKSHOPS=[
+  {id:1,title:'Oil Painting Masterclass',instructor:'Priya Sharma',category:'Painting',level:'Intermediate',duration:'8 Weeks',schedule:'Sat & Sun, 10AM-1PM',seats:20,enrolled:14,price:'₹8,500',mode:'In-Person',location:'Mumbai Studio',img:'https://picsum.photos/seed/ws1/400/250',rating:4.9,reviews:42},
+  {id:2,title:'Digital Art Fundamentals',instructor:'Arjun Mehta',category:'Digital',level:'Beginner',duration:'4 Weeks',schedule:'Mon, Wed, Fri 6PM-8PM',seats:30,enrolled:28,price:'₹4,200',mode:'Online',location:'Zoom',img:'https://picsum.photos/seed/ws2/400/250',rating:4.7,reviews:89},
+  {id:3,title:'Portrait Photography',instructor:'Kavya Nair',category:'Photography',level:'Beginner',duration:'2 Days Intensive',schedule:'June 14-15, 9AM-5PM',seats:15,enrolled:9,price:'₹5,000',mode:'In-Person',location:'Bangalore Studio',img:'https://picsum.photos/seed/ws3/400/250',rating:4.8,reviews:31},
+  {id:4,title:'Abstract Sculpture',instructor:'Rohan Das',category:'Sculpture',level:'Advanced',duration:'6 Weeks',schedule:'Tuesday 5PM-8PM',seats:12,enrolled:10,price:'₹12,000',mode:'In-Person',location:'Delhi Workshop',img:'https://picsum.photos/seed/ws4/400/250',rating:5.0,reviews:18},
+  {id:5,title:'Watercolor Landscapes',instructor:'Meena Pillai',category:'Painting',level:'Beginner',duration:'3 Weeks',schedule:'Weekend Mornings',seats:25,enrolled:11,price:'₹3,500',mode:'Online',location:'Zoom',img:'https://picsum.photos/seed/ws5/400/250',rating:4.6,reviews:56},
+  {id:6,title:'Photoshop for Artists',instructor:'Sanjay Kumar',category:'Digital',level:'Intermediate',duration:'5 Weeks',schedule:'Wed & Fri 7PM-9PM',seats:40,enrolled:35,price:'₹5,800',mode:'Online',location:'Zoom',img:'https://picsum.photos/seed/ws6/400/250',rating:4.5,reviews:74},
+];
+let activeFilter='all';
+function filterWorkshop(cat,btn){
+  activeFilter=cat;
+  document.querySelectorAll('#workshopFilter .cat-pill').forEach(p=>p.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  renderWorkshops();
+}
+function renderWorkshops(){
+  const filtered=activeFilter==='all'?WORKSHOPS:WORKSHOPS.filter(w=>w.category===activeFilter||w.mode===activeFilter);
+  document.getElementById('workshopsGrid').innerHTML=filtered.map(w=>`
+    <div class="card">
+      <div style="position:relative;overflow:hidden;">
+        <img src="${w.img}" alt="${w.title}" style="width:100%;height:200px;object-fit:cover;transition:.4s ease;"/>
+        <div style="position:absolute;top:.75rem;left:.75rem;"><span class="badge badge-gold">${w.level}</span></div>
+        <div style="position:absolute;top:.75rem;right:.75rem;"><span class="badge ${w.mode==='Online'?'badge-purple':'badge-green'}">${w.mode}</span></div>
+      </div>
+      <div class="card__body">
+        <h3 class="card__title">${w.title}</h3>
+        <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:1rem;">👨‍🎨 ${w.instructor}</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;font-size:.8rem;color:var(--text-secondary);margin-bottom:1rem;">
+          <span>📅 ${w.schedule}</span>
+          <span>⏱ ${w.duration}</span>
+          <span>📍 ${w.location}</span>
+          <span>⭐ ${w.rating} (${w.reviews})</span>
+        </div>
+        <div style="background:var(--bg-glass);border-radius:4px;height:6px;margin-bottom:.5rem;overflow:hidden;">
+          <div style="height:100%;width:${Math.round(w.enrolled/w.seats*100)}%;background:linear-gradient(90deg,var(--gold),var(--gold-light));"></div>
+        </div>
+        <p style="font-size:.78rem;color:var(--text-muted);margin-bottom:1.25rem;">${w.enrolled}/${w.seats} seats filled</p>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.5rem;border-top:1px solid var(--border);">
+        <span style="font-weight:700;color:var(--gold);font-size:1.1rem;">${w.price}</span>
+        <button class="btn btn-primary btn-sm" onclick='openEnroll(${JSON.stringify(w).replace(/'/g,"&#39;")})'>Enroll →</button>
+      </div>
+    </div>`).join('');
+}
+function openEnroll(w){
+  document.getElementById('enrollModalBody').innerHTML=`<div style="background:var(--bg-glass);border-radius:var(--radius-md);padding:1rem;margin-bottom:1rem;"><strong>${w.title}</strong> — ${w.price}</div>`;
+  document.getElementById('enrollModal').classList.add('open');
+}
+function confirmEnrollment(){closeModal('enrollModal');showToast('Successfully enrolled! Check your email.','success');}
+document.addEventListener('DOMContentLoaded',renderWorkshops);
+</script>
+</body>
+</html>

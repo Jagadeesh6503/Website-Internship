@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Artwork Detail — ArtVault</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/artwork-detail.css"/>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="navbar__logo">🎨 ArtVault</a>
+  <ul class="navbar__links">
+    <li><a href="index.html">Home</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="auction.html">Auctions</a></li><li><a href="artists.html">Artists</a></li>
+  </ul>
+  <div class="navbar__actions">
+    <a href="wishlist.html" class="navbar__icon-btn">♡<span class="navbar__badge" id="wishBadge">0</span></a>
+    <a href="cart.html" class="navbar__icon-btn">🛒<span class="navbar__badge" id="cartBadge">0</span></a>
+    <a href="login.html" class="btn btn-outline btn-sm" id="loginBtn">Login</a>
+    <img src="" alt="User" class="navbar__avatar" id="userAvatar" style="display:none"/>
+  </div>
+</nav>
+
+<section class="section">
+  <div class="container">
+    <div class="breadcrumb" style="margin-bottom:2rem;"><a href="index.html">Home</a><span>/</span><a href="gallery.html">Gallery</a><span>/</span><span id="artBreadcrumb">Artwork</span></div>
+    <div class="artwork-detail-layout" id="artworkDetail">
+      <div class="loader"><div class="spinner"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- RELATED ARTWORKS -->
+<section class="section" style="background:var(--bg-secondary);border-top:1px solid var(--border);">
+  <div class="container">
+    <div class="section-header">
+      <h2>Related <span class="accent">Artworks</span></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="artworks-grid" id="relatedGrid"><div class="loader"><div class="spinner"></div></div></div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews-section">
+  <div class="container">
+    <h2 style="font-family:var(--font-display);font-size:1.8rem;font-weight:700;margin-bottom:2rem;">Reviews &amp; <span class="accent">Ratings</span></h2>
+    <div class="reviews-summary">
+      <div class="reviews-big-score">
+        <div class="score" id="avgScore">4.8</div>
+        <div class="stars" style="justify-content:center;margin:.5rem 0;">★★★★★</div>
+        <div class="total" id="reviewTotal">0 reviews</div>
+      </div>
+      <div class="rating-bars" id="ratingBars"></div>
+    </div>
+    <div id="reviewsList"></div>
+    <div class="write-review" id="writeReview">
+      <h3 style="font-family:var(--font-display);font-size:1.2rem;font-weight:600;margin-bottom:1.25rem;">Write a Review</h3>
+      <div class="form-group">
+        <label class="form-label">Your Rating</label>
+        <div class="star-input" id="starInput">
+          <span class="star" data-v="1" onclick="setRating(1)">★</span>
+          <span class="star" data-v="2" onclick="setRating(2)">★</span>
+          <span class="star" data-v="3" onclick="setRating(3)">★</span>
+          <span class="star" data-v="4" onclick="setRating(4)">★</span>
+          <span class="star" data-v="5" onclick="setRating(5)">★</span>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Review Title</label><input class="form-control" id="reviewTitle" placeholder="Summarize your experience…"/></div>
+      <div class="form-group"><label class="form-label">Your Review</label><textarea class="form-control" id="reviewText" rows="4" placeholder="Tell others about this artwork…"></textarea></div>
+      <button class="btn btn-primary" onclick="submitReview()">Submit Review</button>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__grid">
+    <div><div class="footer__logo">🎨 ArtVault</div><p class="footer__desc">Premier online art gallery.</p></div>
+    <div class="footer__col"><h4>Explore</h4><a href="gallery.html">Gallery</a><a href="auction.html">Auctions</a></div>
+    <div class="footer__col"><h4>Support</h4><a href="about.html">About</a><a href="#">FAQ</a></div>
+    <div class="footer__col"><h4>Legal</h4><a href="#">Privacy</a><a href="#">Terms</a></div>
+  </div>
+  <div class="footer__bottom">© 2025 ArtVault. All rights reserved.</div>
+</footer>
+<div class="toast-container" id="toastContainer"></div>
+<script src="js/main.js"></script>
+<script src="js/artwork-detail.js"></script>
+</body>
+</html>

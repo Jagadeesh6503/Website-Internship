@@ -1,0 +1,64 @@
+/* ── ARTWORK DETAIL ── */
+.artwork-detail-layout{display:grid;grid-template-columns:1fr 480px;gap:3rem;align-items:start;padding:calc(var(--navbar-h) + 2rem) 0 4rem;}
+.artwork-viewer{position:sticky;top:calc(var(--navbar-h) + 1.5rem);}
+.artwork-main-img{width:100%;border-radius:var(--radius-xl);overflow:hidden;position:relative;cursor:zoom-in;background:var(--bg-card);border:1px solid var(--border);}
+.artwork-main-img img{width:100%;max-height:600px;object-fit:contain;transition:.4s ease;display:block;}
+.artwork-main-img:hover img{transform:scale(1.04);}
+.artwork-zoom-hint{position:absolute;bottom:1rem;right:1rem;background:rgba(0,0,0,.6);color:var(--text-secondary);font-size:.75rem;padding:.35rem .75rem;border-radius:var(--radius-full);backdrop-filter:blur(8px);}
+.artwork-thumbs{display:flex;gap:.75rem;margin-top:1rem;overflow-x:auto;padding-bottom:.5rem;}
+.artwork-thumb{width:80px;height:60px;border-radius:var(--radius-sm);overflow:hidden;border:2px solid var(--border);cursor:pointer;flex-shrink:0;transition:var(--transition);}
+.artwork-thumb:hover,.artwork-thumb.active{border-color:var(--gold);}
+.artwork-thumb img{width:100%;height:100%;object-fit:cover;}
+.artwork-badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem;}
+.artwork-title{font-family:var(--font-display);font-size:2rem;font-weight:800;line-height:1.2;margin-bottom:.5rem;}
+.artwork-artist-row{display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border);}
+.artwork-artist-avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--border-gold);}
+.artwork-artist-info a{font-size:.9rem;font-weight:600;color:var(--gold);}
+.artwork-artist-info small{display:block;font-size:.78rem;color:var(--text-muted);}
+.artwork-price-row{display:flex;align-items:baseline;gap:1rem;margin-bottom:1.5rem;}
+.artwork-price{font-size:2.2rem;font-weight:700;color:var(--gold);font-family:var(--font-display);}
+.artwork-original-price{font-size:1.1rem;text-decoration:line-through;color:var(--text-muted);}
+.artwork-meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.75rem;}
+.artwork-meta-item{background:var(--bg-glass);border:1px solid var(--border);border-radius:var(--radius-md);padding:.85rem 1rem;}
+.artwork-meta-item label{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);display:block;margin-bottom:.2rem;}
+.artwork-meta-item span{font-size:.9rem;font-weight:500;color:var(--text-primary);}
+.artwork-actions{display:flex;flex-direction:column;gap:.75rem;margin-bottom:1.75rem;}
+.artwork-actions .row{display:flex;gap:.75rem;}
+.artwork-desc{color:var(--text-secondary);line-height:1.8;font-size:.95rem;margin-bottom:1.75rem;}
+.artwork-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.75rem;}
+
+/* ── REVIEWS ── */
+.reviews-section{padding:3rem 0;border-top:1px solid var(--border);}
+.reviews-summary{display:grid;grid-template-columns:160px 1fr;gap:2rem;align-items:center;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2rem;margin-bottom:2rem;}
+.reviews-big-score{text-align:center;}
+.reviews-big-score .score{font-size:3.5rem;font-weight:800;color:var(--gold);font-family:var(--font-display);line-height:1;}
+.reviews-big-score .total{font-size:.85rem;color:var(--text-muted);}
+.rating-bars{display:flex;flex-direction:column;gap:.5rem;}
+.rating-bar-row{display:flex;align-items:center;gap.75rem;font-size:.8rem;}
+.rating-bar-row span:first-child{width:40px;color:var(--text-muted);}
+.rating-bar-track{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;}
+.rating-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:4px;}
+.rating-bar-row span:last-child{width:30px;text-align:right;color:var(--text-muted);}
+.review-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1rem;}
+.review-card__header{display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem;}
+.review-card__avatar{width:42px;height:42px;border-radius:50%;object-fit:cover;}
+.review-card__name{font-weight:600;font-size:.9rem;}
+.review-card__date{font-size:.75rem;color:var(--text-muted);}
+.review-card__text{color:var(--text-secondary);font-size:.9rem;line-height:1.7;}
+.write-review{background:var(--bg-card);border:1px solid var(--border-gold);border-radius:var(--radius-lg);padding:2rem;margin-top:2rem;}
+.star-input{display:flex;gap:.35rem;}
+.star-input .star{font-size:1.5rem;cursor:pointer;transition:var(--transition);}
+.star-input .star:hover,.star-input .star.active{color:var(--gold);transform:scale(1.2);}
+
+/* ── ARTIST PROFILES ── */
+.artist-profile-header{background:linear-gradient(135deg,var(--bg-tertiary),rgba(124,58,237,.08));border-bottom:1px solid var(--border);padding:calc(var(--navbar-h) + 3rem) 0 3rem;}
+.artist-profile-inner{display:flex;align-items:flex-end;gap:2.5rem;}
+.artist-profile-avatar{width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid var(--gold);box-shadow:var(--shadow-gold);flex-shrink:0;}
+.artist-profile-info{flex:1;}
+.artist-profile-name{font-family:var(--font-display);font-size:2.5rem;font-weight:800;margin-bottom:.5rem;}
+.artist-profile-style{color:var(--gold);font-size:1rem;margin-bottom.75rem;}
+.artist-profile-stats{display:flex;gap:2rem;margin-top:1rem;}
+.artist-profile-stat .num{font-size:1.4rem;font-weight:700;color:var(--text-primary);font-family:var(--font-display);}
+.artist-profile-stat .label{font-size:.75rem;color:var(--text-muted);}
+.artist-profile-actions{display:flex;gap:.75rem;}
+@media(max-width:800px){.artwork-detail-layout{grid-template-columns:1fr;} .artwork-viewer{position:static;} .artist-profile-inner{flex-direction:column;}}

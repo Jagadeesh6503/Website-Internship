@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>ArtVault — Premier Online Art Gallery</title>
+  <meta name="description" content="Discover, collect and celebrate world-class art. Live auctions, exhibitions, workshops and curated collections from global artists."/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/home.css"/>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="navbar__logo">🎨 ArtVault</a>
+  <ul class="navbar__links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="auction.html">Live Auctions</a></li>
+    <li><a href="exhibition.html">Exhibitions</a></li>
+    <li><a href="workshop.html">Workshops</a></li>
+    <li><a href="artists.html">Artists</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+  <div class="navbar__actions">
+    <a href="wishlist.html" class="navbar__icon-btn" title="Wishlist">♡<span class="navbar__badge" id="wishBadge">0</span></a>
+    <a href="cart.html" class="navbar__icon-btn" title="Cart">🛒<span class="navbar__badge" id="cartBadge">0</span></a>
+    <a href="login.html" class="btn btn-outline btn-sm" id="loginBtn">Login</a>
+    <a href="register.html" class="btn btn-primary btn-sm" id="registerBtn">Register</a>
+    <img src="" alt="User" class="navbar__avatar" id="userAvatar" style="display:none" onclick="location.href='dashboard.html'"/>
+  </div>
+  <div class="navbar__hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <canvas id="particles-canvas"></canvas>
+  <div class="hero__bg"></div>
+  <div class="hero__deco hero__deco--left"><img src="https://picsum.photos/seed/art1/180/260" alt="art"/></div>
+  <div class="hero__deco hero__deco--right"><img src="https://picsum.photos/seed/art2/180/260" alt="art"/></div>
+  <div class="hero__content">
+    <div class="hero__tagline">✨ World-Class Art Platform</div>
+    <h1>Where Art Meets <span class="accent">Passion</span></h1>
+    <p>Discover masterpieces, bid in live auctions, attend exclusive exhibitions, and connect with visionary artists worldwide.</p>
+    <div class="hero__search">
+      <div class="search-bar">
+        <input type="text" id="heroSearch" placeholder="Search artworks, artists, styles…"/>
+        <button id="heroSearchBtn" onclick="doSearch()">🔍 Search</button>
+      </div>
+    </div>
+    <div class="hero__cta">
+      <a href="gallery.html" class="btn btn-primary btn-lg">🖼️ Browse Gallery</a>
+      <a href="auction.html" class="btn btn-outline btn-lg">🔨 Live Auctions</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat"><div class="stat__num" id="statArtworks">0</div><div class="stat__label">Artworks</div></div>
+  <div class="stat"><div class="stat__num" id="statArtists">0</div><div class="stat__label">Artists</div></div>
+  <div class="stat"><div class="stat__num" id="statExhibitions">0</div><div class="stat__label">Exhibitions</div></div>
+  <div class="stat"><div class="stat__num" id="statSales">0</div><div class="stat__label">Artworks Sold</div></div>
+</div>
+
+<!-- AUCTION TICKER -->
+<div class="auction-ticker">
+  <div style="display:flex;align-items:center;padding:0 1.5rem;">
+    <span class="ticker__label">🔴 LIVE</span>
+    <div style="overflow:hidden;flex:1;">
+      <div class="ticker__track" id="tickerTrack">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CATEGORIES STRIP -->
+<section class="section" style="padding-bottom:0;padding-top:3.5rem;">
+  <div class="container">
+    <div class="section-header" style="text-align:left;margin-bottom:1.25rem;">
+      <h2>Browse <span class="accent">Categories</span></h2>
+    </div>
+    <div class="cats-wrap"><div class="categories-strip" id="categoriesStrip">
+      <div class="cat-pill active" onclick="filterByCategory(this,'all')">All</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- FEATURED ARTWORKS -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Featured <span class="accent">Artworks</span></h2>
+      <div class="divider"></div>
+      <p>Handpicked masterpieces from our curated collection</p>
+    </div>
+    <div class="artworks-grid" id="featuredGrid"><div class="loader"><div class="spinner"></div></div></div>
+    <div style="text-align:center;margin-top:2.5rem;">
+      <a href="gallery.html" class="btn btn-outline btn-lg">View All Artworks →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED ARTISTS -->
+<section class="artist-spotlight">
+  <div class="container">
+    <div class="section-header">
+      <h2>Spotlight <span class="accent">Artists</span></h2>
+      <div class="divider"></div>
+      <p>Connect with the visionary creators behind the masterpieces</p>
+    </div>
+    <div class="artists-row" id="artistsRow"><div class="loader"><div class="spinner"></div></div></div>
+    <div style="text-align:center;margin-top:2rem;">
+      <a href="artists.html" class="btn btn-outline btn-lg">All Artists →</a>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE US -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Why Choose <span class="accent">ArtVault</span></h2>
+      <div class="divider"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.5rem;">
+      <div class="card" style="padding:2rem;text-align:center;" data-aos>
+        <div style="font-size:2.5rem;margin-bottom:1rem;">🎨</div>
+        <h3 style="font-family:var(--font-display);margin-bottom:.75rem;font-size:1.1rem;">Curated Collections</h3>
+        <p style="color:var(--text-secondary);font-size:.875rem;">Every artwork is hand-selected by our expert curators ensuring the highest quality.</p>
+      </div>
+      <div class="card" style="padding:2rem;text-align:center;" data-aos>
+        <div style="font-size:2.5rem;margin-bottom:1rem;">🔐</div>
+        <h3 style="font-family:var(--font-display);margin-bottom:.75rem;font-size:1.1rem;">Secure Transactions</h3>
+        <p style="color:var(--text-secondary);font-size:.875rem;">Bank-grade encryption for every purchase. Your data and payments are always safe.</p>
+      </div>
+      <div class="card" style="padding:2rem;text-align:center;" data-aos>
+        <div style="font-size:2.5rem;margin-bottom:1rem;">🚚</div>
+        <h3 style="font-family:var(--font-display);margin-bottom:.75rem;font-size:1.1rem;">Free Worldwide Shipping</h3>
+        <p style="color:var(--text-secondary);font-size:.875rem;">Every artwork ships free, carefully packaged to arrive in perfect condition.</p>
+      </div>
+      <div class="card" style="padding:2rem;text-align:center;" data-aos>
+        <div style="font-size:2.5rem;margin-bottom:1rem;">🔨</div>
+        <h3 style="font-family:var(--font-display);margin-bottom:.75rem;font-size:1.1rem;">Live Auctions</h3>
+        <p style="color:var(--text-secondary);font-size:.875rem;">Participate in real-time auctions and own exclusive pieces at fair market prices.</p>
+      </div>
+      <div class="card" style="padding:2rem;text-align:center;" data-aos>
+        <div style="font-size:2.5rem;margin-bottom:1rem;">🏛️</div>
+        <h3 style="font-family:var(--font-display);margin-bottom:.75rem;font-size:1.1rem;">Virtual Exhibitions</h3>
+        <p style="color:var(--text-secondary);font-size:.875rem;">Attend world-class art exhibitions from the comfort of your home.</p>
+      </div>
+      <div class="card" style="padding:2rem;text-align:center;" data-aos>
+        <div style="font-size:2.5rem;margin-bottom:1rem;">👨‍🎨</div>
+        <h3 style="font-family:var(--font-display);margin-bottom:.75rem;font-size:1.1rem;">Artist Community</h3>
+        <p style="color:var(--text-secondary);font-size:.875rem;">Follow artists, attend workshops, and be part of a thriving creative community.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter-section section">
+  <div class="container">
+    <div class="newsletter-inner">
+      <div class="newsletter-text">
+        <h2>Stay <span class="accent">Inspired</span></h2>
+        <p>Get curated art news, exclusive auction previews, and workshop invitations delivered to your inbox.</p>
+        <ul class="newsletter-features">
+          <li>Weekly curated artwork selections</li>
+          <li>Early access to auction events</li>
+          <li>Exclusive workshop discounts</li>
+          <li>Artist spotlight stories</li>
+        </ul>
+      </div>
+      <div class="newsletter-form">
+        <h3>Join 50,000+ Art Lovers</h3>
+        <div class="form-group">
+          <label class="form-label">Your Name</label>
+          <input class="form-control" type="text" id="nlName" placeholder="Enter your name"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input class="form-control" type="email" id="nlEmail" placeholder="Enter your email"/>
+        </div>
+        <button class="btn btn-primary btn-block" onclick="subscribeNewsletter()">Subscribe Now →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer__grid">
+    <div>
+      <div class="footer__logo">🎨 ArtVault</div>
+      <p class="footer__desc">The premier destination for discovering, collecting, and celebrating artwork from visionary artists around the world.</p>
+      <div class="footer__social">
+        <a href="#" aria-label="Facebook">f</a>
+        <a href="#" aria-label="Twitter">𝕏</a>
+        <a href="#" aria-label="Instagram">📷</a>
+        <a href="#" aria-label="Pinterest">P</a>
+        <a href="#" aria-label="YouTube">▶</a>
+      </div>
+    </div>
+    <div class="footer__col">
+      <h4>Explore</h4>
+      <a href="gallery.html">Art Gallery</a>
+      <a href="auction.html">Live Auctions</a>
+      <a href="exhibition.html">Exhibitions</a>
+      <a href="workshop.html">Workshops</a>
+      <a href="artists.html">Artists</a>
+    </div>
+    <div class="footer__col">
+      <h4>Categories</h4>
+      <a href="gallery.html?cat=painting">Painting</a>
+      <a href="gallery.html?cat=sculpture">Sculpture</a>
+      <a href="gallery.html?cat=photography">Photography</a>
+      <a href="gallery.html?cat=digital">Digital Art</a>
+      <a href="gallery.html?cat=prints">Prints</a>
+    </div>
+    <div class="footer__col">
+      <h4>Support</h4>
+      <a href="about.html">About Us</a>
+      <a href="about.html#contact">Contact</a>
+      <a href="#">FAQ</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+    </div>
+  </div>
+  <div class="footer__bottom">© 2025 ArtVault. All rights reserved. | Built with ❤️ for art lovers everywhere.</div>
+</footer>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="js/main.js"></script>
+<script src="js/home.js"></script>
+</body>
+</html>

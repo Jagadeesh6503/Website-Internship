@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Live Auctions — Bid on Exclusive Art | ArtVault</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/auction.css"/>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="navbar__logo">🎨 ArtVault</a>
+  <ul class="navbar__links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="auction.html" class="active">Live Auctions</a></li>
+    <li><a href="exhibition.html">Exhibitions</a></li>
+    <li><a href="workshop.html">Workshops</a></li>
+    <li><a href="artists.html">Artists</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+  <div class="navbar__actions">
+    <a href="wishlist.html" class="navbar__icon-btn">♡<span class="navbar__badge" id="wishBadge">0</span></a>
+    <a href="cart.html" class="navbar__icon-btn">🛒<span class="navbar__badge" id="cartBadge">0</span></a>
+    <a href="login.html" class="btn btn-outline btn-sm" id="loginBtn">Login</a>
+    <a href="register.html" class="btn btn-primary btn-sm" id="registerBtn">Register</a>
+    <img src="" alt="User" class="navbar__avatar" id="userAvatar" style="display:none" onclick="location.href='dashboard.html'"/>
+  </div>
+  <div class="navbar__hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="auction-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Live Auctions</span></div>
+    <div class="live-badge">🔴 Live Now</div>
+    <h1 style="font-family:var(--font-display);font-size:3rem;font-weight:800;margin-bottom:1rem;">Live <span class="accent">Auctions</span></h1>
+    <p style="color:var(--text-secondary);font-size:1.1rem;">Bid on exclusive, one-of-a-kind artworks in real time. Every bid brings you closer to owning a masterpiece.</p>
+    <div style="display:flex;gap:2rem;justify-content:center;margin-top:2rem;flex-wrap:wrap;">
+      <div style="text-align:center;"><div style="font-size:1.8rem;font-weight:700;color:var(--gold);" id="liveCount">12</div><div style="font-size:.8rem;color:var(--text-muted);">Live Auctions</div></div>
+      <div style="text-align:center;"><div style="font-size:1.8rem;font-weight:700;color:var(--gold);" id="upcomingCount">28</div><div style="font-size:.8rem;color:var(--text-muted);">Upcoming</div></div>
+      <div style="text-align:center;"><div style="font-size:1.8rem;font-weight:700;color:var(--gold);" id="bidderCount">1,450+</div><div style="font-size:.8rem;color:var(--text-muted);">Active Bidders</div></div>
+    </div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('live',this)">🔴 Live Now</button>
+      <button class="tab-btn" onclick="showTab('upcoming',this)">⏰ Upcoming</button>
+      <button class="tab-btn" onclick="showTab('ended',this)">✅ Ended</button>
+    </div>
+
+    <div class="tab-pane active" id="tab-live">
+      <div class="auctions-grid" id="liveAuctions"><div class="loader"><div class="spinner"></div></div></div>
+    </div>
+    <div class="tab-pane" id="tab-upcoming">
+      <div class="auctions-grid" id="upcomingAuctions"><div class="loader"><div class="spinner"></div></div></div>
+    </div>
+    <div class="tab-pane" id="tab-ended">
+      <div class="auctions-grid" id="endedAuctions"><div class="loader"><div class="spinner"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BID MODAL -->
+<div class="modal-overlay" id="bidModal">
+  <div class="modal" style="max-width:700px;">
+    <button class="modal__close" onclick="closeModal('bidModal')">✕</button>
+    <h2 class="modal__title" id="bidModalTitle">Place Your Bid</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;" id="bidModalBody">
+      <div>
+        <img src="" alt="" id="bidModalImg" style="width:100%;border-radius:var(--radius-lg);object-fit:cover;max-height:280px;"/>
+        <div style="margin-top:1rem;">
+          <div class="bid-history" id="bidHistory"></div>
+        </div>
+      </div>
+      <div>
+        <div class="auction-card__bids" style="margin-bottom:1.5rem;">
+          <div class="auction-bid-info"><label>Current Bid</label><div class="value" id="bidModalCurrent">₹0</div></div>
+          <div class="auction-bid-info"><label>Min Increment</label><div class="value">₹500</div></div>
+        </div>
+        <div class="countdown" id="bidModalCountdown"></div>
+        <div class="form-group">
+          <label class="form-label">Your Bid Amount</label>
+          <input class="form-control" type="number" id="bidAmount" placeholder="Enter amount…"/>
+        </div>
+        <button class="btn btn-primary btn-block" onclick="placeBid()" style="margin-bottom:.75rem;">🔨 Place Bid</button>
+        <p style="font-size:.8rem;color:var(--text-muted);text-align:center;">By placing a bid you agree to our auction terms.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer__grid">
+    <div><div class="footer__logo">🎨 ArtVault</div><p class="footer__desc">Premier online art gallery and auction house.</p><div class="footer__social"><a href="#">f</a><a href="#">𝕏</a><a href="#">📷</a></div></div>
+    <div class="footer__col"><h4>Explore</h4><a href="gallery.html">Gallery</a><a href="auction.html">Auctions</a><a href="exhibition.html">Exhibitions</a></div>
+    <div class="footer__col"><h4>Categories</h4><a href="#">Painting</a><a href="#">Sculpture</a><a href="#">Photography</a></div>
+    <div class="footer__col"><h4>Support</h4><a href="about.html">About</a><a href="#">FAQ</a><a href="#">Contact</a></div>
+  </div>
+  <div class="footer__bottom">© 2025 ArtVault. All rights reserved.</div>
+</footer>
+<div class="toast-container" id="toastContainer"></div>
+<script src="js/main.js"></script>
+<script src="js/auction.js"></script>
+</body>
+</html>

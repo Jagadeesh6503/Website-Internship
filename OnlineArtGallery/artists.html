@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Artists Directory — ArtVault</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/artwork-detail.css"/>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="navbar__logo">🎨 ArtVault</a>
+  <ul class="navbar__links">
+    <li><a href="index.html">Home</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="auction.html">Auctions</a></li><li><a href="artists.html" class="active">Artists</a></li><li><a href="about.html">About</a></li>
+  </ul>
+  <div class="navbar__actions">
+    <a href="wishlist.html" class="navbar__icon-btn">♡<span class="navbar__badge" id="wishBadge">0</span></a>
+    <a href="cart.html" class="navbar__icon-btn">🛒<span class="navbar__badge" id="cartBadge">0</span></a>
+    <a href="login.html" class="btn btn-outline btn-sm" id="loginBtn">Login</a>
+    <img src="" alt="User" class="navbar__avatar" id="userAvatar" style="display:none"/>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Artists</span></div>
+    <h1>Meet the <span class="accent">Artists</span></h1>
+    <p>Discover the visionary creators behind every masterpiece in our collection</p>
+  </div>
+</div>
+
+<section class="section" style="padding-top:2.5rem;">
+  <div class="container">
+    <div style="display:flex;gap:1rem;align-items:center;margin-bottom:2rem;flex-wrap:wrap;">
+      <div class="search-bar" style="flex:1;min-width:240px;">
+        <input type="text" id="artistSearch" placeholder="Search artists by name or style…" oninput="filterArtists()"/>
+        <button>🔍</button>
+      </div>
+      <div class="cats-wrap" style="flex:1;">
+        <div class="categories-strip" id="styleFilter">
+          <div class="cat-pill active" onclick="filterByStyle('all',this)">All Styles</div>
+          <div class="cat-pill" onclick="filterByStyle('Abstract',this)">Abstract</div>
+          <div class="cat-pill" onclick="filterByStyle('Realism',this)">Realism</div>
+          <div class="cat-pill" onclick="filterByStyle('Impressionism',this)">Impressionism</div>
+          <div class="cat-pill" onclick="filterByStyle('Contemporary',this)">Contemporary</div>
+          <div class="cat-pill" onclick="filterByStyle('Digital',this)">Digital</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="artists-row" id="artistsGrid" style="grid-template-columns:repeat(auto-fill,minmax(220px,1fr));">
+      <div class="loader"><div class="spinner"></div></div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__grid">
+    <div><div class="footer__logo">🎨 ArtVault</div><p class="footer__desc">Premier online art gallery.</p></div>
+    <div class="footer__col"><h4>Explore</h4><a href="gallery.html">Gallery</a><a href="auction.html">Auctions</a></div>
+    <div class="footer__col"><h4>Support</h4><a href="about.html">About</a><a href="#">FAQ</a></div>
+    <div class="footer__col"><h4>Legal</h4><a href="#">Privacy</a><a href="#">Terms</a></div>
+  </div>
+  <div class="footer__bottom">© 2025 ArtVault. All rights reserved.</div>
+</footer>
+<div class="toast-container" id="toastContainer"></div>
+<script src="js/main.js"></script>
+<script src="js/artists.js"></script>
+</body>
+</html>

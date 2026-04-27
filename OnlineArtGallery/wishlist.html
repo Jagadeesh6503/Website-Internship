@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>My Wishlist — ArtVault</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="navbar__logo">🎨 ArtVault</a>
+  <ul class="navbar__links">
+    <li><a href="index.html">Home</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="auction.html">Auctions</a></li>
+  </ul>
+  <div class="navbar__actions">
+    <a href="wishlist.html" class="navbar__icon-btn">♡<span class="navbar__badge" id="wishBadge">0</span></a>
+    <a href="cart.html" class="navbar__icon-btn">🛒<span class="navbar__badge" id="cartBadge">0</span></a>
+    <a href="login.html" class="btn btn-outline btn-sm" id="loginBtn">Login</a>
+    <img src="" alt="User" class="navbar__avatar" id="userAvatar" style="display:none"/>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Wishlist</span></div>
+    <h1>My <span class="accent">Wishlist</span></h1>
+    <p>Artworks you've saved for later</p>
+  </div>
+</div>
+
+<section class="section" style="padding-top:2.5rem;">
+  <div class="container">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;">
+      <span id="wishCount" style="color:var(--text-muted);font-size:.9rem;">0 items saved</span>
+      <button class="btn btn-ghost btn-sm" onclick="addAllToCart()">Add All to Cart</button>
+    </div>
+    <div class="artworks-grid" id="wishlistGrid">
+      <div class="loader"><div class="spinner"></div></div>
+    </div>
+    <div id="wishlistEmpty" style="display:none;text-align:center;padding:6rem 2rem;">
+      <div style="font-size:4rem;margin-bottom:1rem;">♡</div>
+      <h3 style="font-family:var(--font-display);font-size:1.5rem;margin-bottom:.75rem;">Your wishlist is empty</h3>
+      <p style="color:var(--text-secondary);margin-bottom:2rem;">Start browsing our gallery and save artworks you love!</p>
+      <a href="gallery.html" class="btn btn-primary btn-lg">Browse Gallery</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__grid">
+    <div><div class="footer__logo">🎨 ArtVault</div><p class="footer__desc">Premier online art gallery.</p></div>
+    <div class="footer__col"><h4>Explore</h4><a href="gallery.html">Gallery</a><a href="auction.html">Auctions</a></div>
+    <div class="footer__col"><h4>Support</h4><a href="about.html">About</a><a href="#">FAQ</a></div>
+    <div class="footer__col"><h4>Legal</h4><a href="#">Privacy</a><a href="#">Terms</a></div>
+  </div>
+  <div class="footer__bottom">© 2025 ArtVault. All rights reserved.</div>
+</footer>
+<div class="toast-container" id="toastContainer"></div>
+<script src="js/main.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded',()=>{
+    const wish=JSON.parse(localStorage.getItem('artGalleryWishlist')||'[]');
+    const grid=document.getElementById('wishlistGrid');
+    const empty=document.getElementById('wishlistEmpty');
+    document.getElementById('wishCount').textContent=wish.length+' item'+(wish.length!==1?'s':'')+' saved';
+    if(!wish.length){grid.style.display='none';empty.style.display='block';return;}
+    grid.innerHTML=wish.map(a=>`
+      <div class="artwork-card">
+        <div class="artwork-card__img-wrap">
+          <img class="artwork-card__img" src="${a.img}" alt="${a.title}" loading="lazy"/>
+          <div class="artwork-card__overlay">
+            <div class="artwork-card__actions">
+              <button class="btn btn-primary btn-sm" onclick="addToCart(${JSON.stringify(a).replace(/"/g,'&quot;')})">🛒 Add to Cart</button>
+            </div>
+          </div>
+          <button class="artwork-card__wish active" onclick="removeFromWishlist(${a.id},this)">♥</button>
+        </div>
+        <div class="artwork-card__info">
+          <div class="artwork-card__title">${a.title}</div>
+          <div class="artwork-card__artist">${a.artist}</div>
+        </div>
+        <div class="artwork-card__footer">
+          <span class="artwork-card__price">${a.price}</span>
+          <a href="artwork-detail.html?id=${a.id}" class="btn btn-ghost btn-sm">View</a>
+        </div>
+      </div>`).join('');
+  });
+  function removeFromWishlist(id,btn){
+    let wish=JSON.parse(localStorage.getItem('artGalleryWishlist')||'[]');
+    wish=wish.filter(a=>a.id!==id);
+    localStorage.setItem('artGalleryWishlist',JSON.stringify(wish));
+    btn.closest('.artwork-card').remove();
+    document.getElementById('wishCount').textContent=wish.length+' item'+(wish.length!==1?'s':'')+' saved';
+    if(!wish.length){document.getElementById('wishlistGrid').style.display='none';document.getElementById('wishlistEmpty').style.display='block';}
+    showToast('Removed from wishlist','info');
+  }
+  function addAllToCart(){
+    const wish=JSON.parse(localStorage.getItem('artGalleryWishlist')||'[]');
+    let cart=JSON.parse(localStorage.getItem('artGalleryCart')||'[]');
+    wish.forEach(a=>{if(!cart.find(c=>c.id===a.id))cart.push({...a,qty:1});});
+    localStorage.setItem('artGalleryCart',JSON.stringify(cart));
+    showToast('All items added to cart!','success');
+    location.href='cart.html';
+  }
+  function addToCart(a){
+    let cart=JSON.parse(localStorage.getItem('artGalleryCart')||'[]');
+    if(!cart.find(c=>c.id===a.id)){cart.push({...a,qty:1});localStorage.setItem('artGalleryCart',JSON.stringify(cart));}
+    showToast('Added to cart!','success');
+  }
+</script>
+</body>
+</html>

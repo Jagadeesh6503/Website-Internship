@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Upload Artwork — ArtVault</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="navbar__logo">🎨 ArtVault</a>
+  <ul class="navbar__links">
+    <li><a href="index.html">Home</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="dashboard.html">Dashboard</a></li>
+  </ul>
+  <div class="navbar__actions">
+    <a href="cart.html" class="navbar__icon-btn">🛒<span class="navbar__badge" id="cartBadge">0</span></a>
+    <img src="" alt="User" class="navbar__avatar" id="userAvatar" style="display:none"/>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="container">
+    <h1>Upload <span class="accent">Artwork</span></h1>
+    <p>Share your masterpiece with the world</p>
+  </div>
+</div>
+
+<section class="section" style="padding-top:2.5rem;">
+  <div class="container" style="max-width:900px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;">
+
+      <!-- IMAGE UPLOAD -->
+      <div>
+        <div id="dropZone" style="border:2px dashed var(--border-gold);border-radius:var(--radius-xl);padding:3rem;text-align:center;cursor:pointer;transition:var(--transition);background:var(--bg-glass);min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;"
+          ondragover="handleDragOver(event)" ondrop="handleDrop(event)" onclick="document.getElementById('artFile').click()">
+          <div id="dropContent">
+            <div style="font-size:3rem;margin-bottom:1rem;">🖼️</div>
+            <h3 style="font-family:var(--font-display);font-size:1.2rem;margin-bottom:.5rem;">Drop your artwork here</h3>
+            <p style="color:var(--text-muted);font-size:.875rem;">or click to browse files</p>
+            <p style="color:var(--text-muted);font-size:.78rem;margin-top:.75rem;">JPG, PNG, WEBP up to 10MB</p>
+          </div>
+          <img id="previewImg" src="" alt="" style="max-width:100%;max-height:280px;border-radius:var(--radius-lg);display:none;"/>
+        </div>
+        <input type="file" id="artFile" accept="image/*" style="display:none;" onchange="previewArtwork(this)"/>
+        <div id="uploadProgress" style="display:none;margin-top:1rem;">
+          <div style="display:flex;justify-content:space-between;font-size:.8rem;color:var(--text-muted);margin-bottom:.35rem;"><span>Uploading…</span><span id="progressPct">0%</span></div>
+          <div style="background:var(--border);border-radius:4px;height:6px;overflow:hidden;">
+            <div id="progressFill" style="height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--gold-light));transition:.3s;"></div>
+          </div>
+        </div>
+
+        <!-- ADDITIONAL IMAGES -->
+        <div style="margin-top:1.5rem;">
+          <label class="form-label">Additional Images (optional)</label>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;" id="extraImgGrid">
+            <div style="aspect-ratio:1;border:2px dashed var(--border);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-muted);font-size:1.5rem;" onclick="document.getElementById('extraFiles').click()">+</div>
+          </div>
+          <input type="file" id="extraFiles" multiple accept="image/*" style="display:none;" onchange="addExtraImages(this)"/>
+        </div>
+      </div>
+
+      <!-- ARTWORK DETAILS FORM -->
+      <div>
+        <div class="form-group"><label class="form-label">Artwork Title *</label><input class="form-control" id="artTitle" placeholder="e.g. Sunset Over the Ganges" required/></div>
+        <div class="form-group"><label class="form-label">Description *</label><textarea class="form-control" id="artDesc" rows="4" placeholder="Describe your artwork, inspiration, technique…" required></textarea></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+          <div class="form-group"><label class="form-label">Category *</label>
+            <select class="form-control" id="artCategory">
+              <option value="">Select category</option>
+              <option>Painting</option><option>Sculpture</option><option>Photography</option>
+              <option>Digital Art</option><option>Watercolor</option><option>Abstract</option><option>Prints</option>
+            </select>
+          </div>
+          <div class="form-group"><label class="form-label">Medium *</label>
+            <select class="form-control" id="artMedium">
+              <option value="">Select medium</option>
+              <option>Oil on Canvas</option><option>Acrylic</option><option>Watercolor</option>
+              <option>Ink &amp; Pen</option><option>Mixed Media</option><option>Digital</option><option>Charcoal</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+          <div class="form-group"><label class="form-label">Style</label>
+            <select class="form-control" id="artStyle">
+              <option value="">Select style</option>
+              <option>Abstract</option><option>Realism</option><option>Impressionism</option>
+              <option>Surrealism</option><option>Contemporary</option><option>Minimalism</option>
+            </select>
+          </div>
+          <div class="form-group"><label class="form-label">Year Created</label><input class="form-control" type="number" id="artYear" placeholder="2025" min="1900" max="2025"/></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;">
+          <div class="form-group"><label class="form-label">Width (cm)</label><input class="form-control" type="number" id="artWidth" placeholder="60"/></div>
+          <div class="form-group"><label class="form-label">Height (cm)</label><input class="form-control" type="number" id="artHeight" placeholder="80"/></div>
+          <div class="form-group"><label class="form-label">Price (₹) *</label><input class="form-control" type="number" id="artPrice" placeholder="15000" min="0" required/></div>
+        </div>
+        <div class="form-group"><label class="form-label">Tags (comma separated)</label><input class="form-control" id="artTags" placeholder="nature, abstract, colorful, large…"/></div>
+        <div class="form-group">
+          <label class="form-label">Listing Type</label>
+          <div style="display:flex;gap:1rem;">
+            <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;font-size:.9rem;">
+              <input type="radio" name="listingType" value="sale" checked style="accent-color:var(--gold);"/> For Sale
+            </label>
+            <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;font-size:.9rem;">
+              <input type="radio" name="listingType" value="auction" style="accent-color:var(--gold);"/> Auction
+            </label>
+            <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;font-size:.9rem;">
+              <input type="radio" name="listingType" value="display" style="accent-color:var(--gold);"/> Display Only
+            </label>
+          </div>
+        </div>
+        <div style="display:flex;gap:1rem;margin-top:1.5rem;">
+          <button class="btn btn-outline" onclick="saveDraft()">Save Draft</button>
+          <button class="btn btn-primary btn-block" onclick="submitArtwork()">🚀 Submit Artwork</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__grid">
+    <div><div class="footer__logo">🎨 ArtVault</div><p class="footer__desc">Premier online art gallery.</p></div>
+    <div class="footer__col"><h4>Explore</h4><a href="gallery.html">Gallery</a><a href="auction.html">Auctions</a></div>
+    <div class="footer__col"><h4>Support</h4><a href="about.html">About</a><a href="#">FAQ</a></div>
+    <div class="footer__col"><h4>Legal</h4><a href="#">Privacy</a><a href="#">Terms</a></div>
+  </div>
+  <div class="footer__bottom">© 2025 ArtVault. All rights reserved.</div>
+</footer>
+<div class="toast-container" id="toastContainer"></div>
+<script src="js/main.js"></script>
+<script src="js/artist.js"></script>
+</body>
+</html>

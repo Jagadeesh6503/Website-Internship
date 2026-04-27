@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Art Gallery — Browse &amp; Filter Artworks | ArtVault</title>
+  <meta name="description" content="Browse thousands of artworks — filter by category, price, medium, style. Multiple view modes including masonry grid."/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/gallery.css"/>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="navbar__logo">🎨 ArtVault</a>
+  <ul class="navbar__links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="gallery.html" class="active">Gallery</a></li>
+    <li><a href="auction.html">Live Auctions</a></li>
+    <li><a href="exhibition.html">Exhibitions</a></li>
+    <li><a href="workshop.html">Workshops</a></li>
+    <li><a href="artists.html">Artists</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+  <div class="navbar__actions">
+    <a href="wishlist.html" class="navbar__icon-btn">♡<span class="navbar__badge" id="wishBadge">0</span></a>
+    <a href="cart.html" class="navbar__icon-btn">🛒<span class="navbar__badge" id="cartBadge">0</span></a>
+    <a href="login.html" class="btn btn-outline btn-sm" id="loginBtn">Login</a>
+    <a href="register.html" class="btn btn-primary btn-sm" id="registerBtn">Register</a>
+    <img src="" alt="User" class="navbar__avatar" id="userAvatar" style="display:none" onclick="location.href='dashboard.html'"/>
+  </div>
+  <div class="navbar__hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="page-header">
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Gallery</span></div>
+    <h1>Art <span class="accent">Collection</span></h1>
+    <p>Explore thousands of original artworks from world-renowned and emerging artists</p>
+  </div>
+</div>
+
+<section class="section" style="padding-top:2.5rem;">
+  <div class="container">
+    <div class="gallery-layout">
+
+      <!-- FILTER PANEL -->
+      <aside class="filter-panel" id="filterPanel">
+        <div class="filter-panel__title">Filters <button class="filter-clear" onclick="clearFilters()">Clear All</button></div>
+
+        <div class="filter-section">
+          <h4>Category</h4>
+          <div class="filter-options" id="catFilters">
+            <label class="filter-opt"><input type="checkbox" value="Painting" onchange="applyFilters()"/><span>Painting</span><span class="count">142</span></label>
+            <label class="filter-opt"><input type="checkbox" value="Sculpture" onchange="applyFilters()"/><span>Sculpture</span><span class="count">87</span></label>
+            <label class="filter-opt"><input type="checkbox" value="Photography" onchange="applyFilters()"/><span>Photography</span><span class="count">95</span></label>
+            <label class="filter-opt"><input type="checkbox" value="Digital Art" onchange="applyFilters()"/><span>Digital Art</span><span class="count">213</span></label>
+            <label class="filter-opt"><input type="checkbox" value="Watercolor" onchange="applyFilters()"/><span>Watercolor</span><span class="count">54</span></label>
+            <label class="filter-opt"><input type="checkbox" value="Abstract" onchange="applyFilters()"/><span>Abstract</span><span class="count">178</span></label>
+            <label class="filter-opt"><input type="checkbox" value="Prints" onchange="applyFilters()"/><span>Prints</span><span class="count">63</span></label>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <h4>Price Range</h4>
+          <div class="price-range">
+            <input type="range" class="range-slider" id="priceSlider" min="0" max="100000" value="100000" oninput="updatePriceRange(this.value)"/>
+            <div class="price-inputs">
+              <input type="number" id="priceMin" placeholder="₹0" value="0" onchange="applyFilters()"/>
+              <span>—</span>
+              <input type="number" id="priceMax" placeholder="₹1,00,000" value="100000" onchange="applyFilters()"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <h4>Medium</h4>
+          <div class="filter-options">
+            <label class="filter-opt"><input type="checkbox" value="Oil" onchange="applyFilters()"/><span>Oil on Canvas</span></label>
+            <label class="filter-opt"><input type="checkbox" value="Acrylic" onchange="applyFilters()"/><span>Acrylic</span></label>
+            <label class="filter-opt"><input type="checkbox" value="Watercolor" onchange="applyFilters()"/><span>Watercolor</span></label>
+            <label class="filter-opt"><input type="checkbox" value="Ink" onchange="applyFilters()"/><span>Ink &amp; Pen</span></label>
+            <label class="filter-opt"><input type="checkbox" value="Mixed" onchange="applyFilters()"/><span>Mixed Media</span></label>
+            <label class="filter-opt"><input type="checkbox" value="Digital" onchange="applyFilters()"/><span>Digital</span></label>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <h4>Style</h4>
+          <div class="filter-options">
+            <label class="filter-opt"><input type="checkbox" value="Abstract" onchange="applyFilters()"/><span>Abstract</span></label>
+            <label class="filter-opt"><input type="checkbox" value="Realism" onchange="applyFilters()"/><span>Realism</span></label>
+            <label class="filter-opt"><input type="checkbox" value="Impressionism" onchange="applyFilters()"/><span>Impressionism</span></label>
+            <label class="filter-opt"><input type="checkbox" value="Surrealism" onchange="applyFilters()"/><span>Surrealism</span></label>
+            <label class="filter-opt"><input type="checkbox" value="Contemporary" onchange="applyFilters()"/><span>Contemporary</span></label>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <h4>Availability</h4>
+          <div class="filter-options">
+            <label class="filter-opt"><input type="checkbox" value="available" onchange="applyFilters()"/><span>Available</span></label>
+            <label class="filter-opt"><input type="checkbox" value="auction" onchange="applyFilters()"/><span>On Auction</span></label>
+            <label class="filter-opt"><input type="checkbox" value="sold" onchange="applyFilters()"/><span>Sold</span></label>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-block" onclick="applyFilters()" style="margin-top:1rem;">Apply Filters</button>
+      </aside>
+
+      <!-- GALLERY MAIN -->
+      <div>
+        <div class="gallery-toolbar">
+          <div class="gallery-toolbar__left">
+            <span class="gallery-count" id="galleryCount">Loading artworks…</span>
+            <div class="view-toggle">
+              <button class="view-btn active" id="viewMasonry" onclick="setView('masonry')" title="Masonry">⊞</button>
+              <button class="view-btn" id="viewGrid" onclick="setView('grid')" title="Grid">▦</button>
+              <button class="view-btn" id="viewList" onclick="setView('list')" title="List">☰</button>
+            </div>
+          </div>
+          <div style="display:flex;gap:.75rem;align-items:center;">
+            <div class="search-bar" style="width:240px;">
+              <input type="text" id="gallerySearch" placeholder="Search…" oninput="applyFilters()"/>
+              <button>🔍</button>
+            </div>
+            <select class="sort-select" id="sortSelect" onchange="applyFilters()">
+              <option value="newest">Newest</option>
+              <option value="oldest">Oldest</option>
+              <option value="price_asc">Price: Low to High</option>
+              <option value="price_desc">Price: High to Low</option>
+              <option value="popular">Most Popular</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="artworks-grid masonry" id="galleryGrid">
+          <div class="loader"><div class="spinner"></div></div>
+        </div>
+        <div id="loadMoreWrap" style="text-align:center;margin-top:2rem;display:none;">
+          <button class="btn btn-outline btn-lg" onclick="loadMore()">Load More Artworks</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUICK VIEW MODAL -->
+<div class="modal-overlay" id="quickViewModal">
+  <div class="modal" style="max-width:800px;">
+    <button class="modal__close" onclick="closeModal('quickViewModal')">✕</button>
+    <div class="quick-view-body" id="quickViewBody"></div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer__grid">
+    <div><div class="footer__logo">🎨 ArtVault</div><p class="footer__desc">Premier online art gallery.</p><div class="footer__social"><a href="#">f</a><a href="#">𝕏</a><a href="#">📷</a></div></div>
+    <div class="footer__col"><h4>Explore</h4><a href="gallery.html">Gallery</a><a href="auction.html">Auctions</a><a href="exhibition.html">Exhibitions</a></div>
+    <div class="footer__col"><h4>Categories</h4><a href="#">Painting</a><a href="#">Sculpture</a><a href="#">Photography</a></div>
+    <div class="footer__col"><h4>Support</h4><a href="about.html">About</a><a href="#">FAQ</a><a href="#">Contact</a></div>
+  </div>
+  <div class="footer__bottom">© 2025 ArtVault. All rights reserved.</div>
+</footer>
+<div class="toast-container" id="toastContainer"></div>
+<script src="js/main.js"></script>
+<script src="js/gallery.js"></script>
+</body>
+</html>

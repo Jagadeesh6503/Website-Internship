@@ -1,2 +1,2 @@
 # Website-Internship1-OnlineArtGallery
-# DataScience-Internship-TrafficSignalAI
+# DataScience-Internship2-TrafficSignalAI
